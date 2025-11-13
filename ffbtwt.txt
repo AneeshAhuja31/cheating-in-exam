@@ -1,0 +1,109 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+using namespace std;
+
+// Function to allocate memory using First Fit
+void firstFit(const vector<int>& originalBlocks, int m, const vector<int>& processSize, int n) {
+    vector<int> blockSize = originalBlocks; // copy of original blocks
+    vector<int> allocation(n, -1);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (blockSize[j] >= processSize[i]) {
+                allocation[i] = j;
+                blockSize[j] -= processSize[i];
+                break;
+            }
+        }
+    }
+
+    cout << "\n--- First Fit Allocation ---\n";
+    cout << "Process No.\tProcess Size\tBlock No.\n";
+    for (int i = 0; i < n; i++) {
+        cout << setw(6) << i + 1 << "\t\t" << setw(8) << processSize[i] << "\t\t";
+        if (allocation[i] != -1)
+            cout << allocation[i] + 1;
+        else
+            cout << "Not Allocated";
+        cout << endl;
+    }
+}
+
+// Function to allocate memory using Best Fit
+void bestFit(const vector<int>& originalBlocks, int m, const vector<int>& processSize, int n) {
+    vector<int> blockSize = originalBlocks; // copy of original blocks
+    vector<int> allocation(n, -1);
+
+    for (int i = 0; i < n; i++) {
+        int bestIdx = -1;
+        for (int j = 0; j < m; j++) {
+            if (blockSize[j] >= processSize[i]) {
+                if (bestIdx == -1 || blockSize[j] < blockSize[bestIdx])
+                    bestIdx = j;
+            }
+        }
+        if (bestIdx != -1) {
+            allocation[i] = bestIdx;
+            blockSize[bestIdx] -= processSize[i];
+        }
+    }
+
+    cout << "\n--- Best Fit Allocation ---\n";
+    cout << "Process No.\tProcess Size\tBlock No.\n";
+    for (int i = 0; i < n; i++) {
+        cout << setw(6) << i + 1 << "\t\t" << setw(8) << processSize[i] << "\t\t";
+        if (allocation[i] != -1)
+            cout << allocation[i] + 1;
+        else
+            cout << "Not Allocated";
+        cout << endl;
+    }
+}
+
+// Function to allocate memory using Worst Fit
+void worstFit(const vector<int>& originalBlocks, int m, const vector<int>& processSize, int n) {
+    vector<int> blockSize = originalBlocks; // copy of original blocks
+    vector<int> allocation(n, -1);
+
+    for (int i = 0; i < n; i++) {
+        int worstIdx = -1;
+        for (int j = 0; j < m; j++) {
+            if (blockSize[j] >= processSize[i]) {
+                if (worstIdx == -1 || blockSize[j] > blockSize[worstIdx])
+                    worstIdx = j;
+            }
+        }
+        if (worstIdx != -1) {
+            allocation[i] = worstIdx;
+            blockSize[worstIdx] -= processSize[i];
+        }
+    }
+
+    cout << "\n--- Worst Fit Allocation ---\n";
+    cout << "Process No.\tProcess Size\tBlock No.\n";
+    for (int i = 0; i < n; i++) {
+        cout << setw(6) << i + 1 << "\t\t" << setw(8) << processSize[i] << "\t\t";
+        if (allocation[i] != -1)
+            cout << allocation[i] + 1;
+        else
+            cout << "Not Allocated";
+        cout << endl;
+    }
+}
+
+int main() {
+    vector<int> blockSize = {100, 500, 200, 300, 600};
+    vector<int> processSize = {212, 417, 112, 426};
+
+    int m = blockSize.size();
+    int n = processSize.size();
+
+    firstFit(blockSize, m, processSize, n);
+    bestFit(blockSize, m, processSize, n);
+    worstFit(blockSize, m, processSize, n);
+
+    return 0;
+}
+    
+    

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Scripts Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .toggle-btn {
+            background-color: transparent;
+            color: #333;
+            border: none;
+            padding: 6px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover {
+            color: #555;
+        }
+
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #000;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .tab-btn {
+            background-color: transparent;
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .tab-btn:hover {
+            color: #555;
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            background-color: transparent;
+        }
+
+        .code-display {
+            background-color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: none;
+        }
+
+        .code-title {
+            color: #000;
+            font-size: 20px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .copy-btn {
+            background-color: transparent;
+            color: #333;
+            border: none;
+            padding: 6px 14px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .copy-btn:hover {
+            color: #555;
+        }
+
+        .copy-btn.copied {
+            color: #4CAF50;
+        }
+
+        .code-content {
+            color: #000;
+            background-color: #050505;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            transition: color 0.3s;
+            border: 1px solid #1a1a1a;
+            max-height: 600px;
+            overflow-y: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .code-content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .error-message {
+            color: #ff4444;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ff4444;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .white-text .code-title,
+        .white-text .code-content {
+            color: #fff;
+        }
+
+        .white-text .toggle-btn,
+        .white-text .tab-btn,
+        .white-text .copy-btn {
+            color: #ccc;
+            border-color: #444;
+        }
+
+        .white-text .toggle-btn:hover,
+        .white-text .tab-btn:hover,
+        .white-text .copy-btn:hover {
+            color: #fff;
+            border-color: #666;
+        }
+
+        .white-text .tab-btn.active {
+            color: #fff;
+            border-color: #777;
+            background-color: #1a1a1a;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <div class="header">
+            <button class="toggle-btn" onclick="toggleTextColor()">Toggle Text Color</button>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="tabs-container" id="tabsContainer">
+            <!-- Tabs will be loaded here -->
+        </div>
+
+        <div class="code-display">
+            <div class="code-header">
+                <h2 class="code-title" id="codeTitle">Select a script</h2>
+                <button class="copy-btn" id="copyBtn" onclick="copyCode()">Copy</button>
+            </div>
+            <pre class="code-content" id="codeContent">Click on a tab above to view the code</pre>
+        </div>
+    </div>
+
+    <script>
+        // List of your .txt files in the same directory
+        const scriptFiles = [
+            { title: 'fcfs', file: 'fcfs.txt' },
+            { title: 'sjf np', file: 'sjf_np.txt' },
+            { title: 'sjf p', file: 'sjf_p.txt' },
+            { title: 'ps np', file: 'ps_np.txt' },
+            { title: 'ps p', file: 'ps_p.txt' },
+            { title: 'rr', file: 'rr.txt' },
+            { title: 'pr', file: 'pr.txt' },
+            { title: 'ffbtwt', file: 'ffbtwt.txt' },
+            { title: 'rw', file: 'rw.txt' },
+            { title: 'pc', file: 'pc.txt' },
+            { title: 'b', file: 'b.txt' }
+        ];
+
+        let scriptsData = {};
+        let currentScript = null;
+
+        function toggleTextColor() {
+            const container = document.getElementById('mainContainer');
+            container.classList.toggle('white-text');
+        }
+
+        function copyCode() {
+            const codeContent = document.getElementById('codeContent').textContent;
+            const copyBtn = document.getElementById('copyBtn');
+
+            navigator.clipboard.writeText(codeContent).then(() => {
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('copied');
+
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                showError('Failed to copy code to clipboard');
+            });
+        }
+
+        function showScript(index) {
+            const script = scriptFiles[index];
+            currentScript = index;
+
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Update display
+            document.getElementById('codeTitle').textContent = script.title;
+
+            if (scriptsData[script.file]) {
+                document.getElementById('codeContent').textContent = scriptsData[script.file];
+            } else {
+                document.getElementById('codeContent').textContent = 'Loading...';
+                loadScript(index);
+            }
+        }
+
+        async function loadScript(index) {
+            const script = scriptFiles[index];
+            try {
+                const response = await fetch(script.file);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${script.file}`);
+                }
+                const content = await response.text();
+                scriptsData[script.file] = content;
+
+                // Update display if this is still the selected script
+                if (currentScript === index) {
+                    document.getElementById('codeContent').textContent = content;
+                }
+            } catch (error) {
+                console.error(`Error loading ${script.file}:`, error);
+                scriptsData[script.file] = `Error: Could not load ${script.file}`;
+                if (currentScript === index) {
+                    document.getElementById('codeContent').textContent = scriptsData[script.file];
+                }
+                showError(`Could not load ${script.file}. Make sure the file exists in the same directory.`);
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Initialize tabs when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            const tabsContainer = document.getElementById('tabsContainer');
+
+            scriptFiles.forEach((script, index) => {
+                const button = document.createElement('button');
+                button.className = 'tab-btn';
+                button.textContent = script.title;
+                button.onclick = () => showScript(index);
+                tabsContainer.appendChild(button);
+            });
+
+            // Load first script by default
+            if (scriptFiles.length > 0) {
+                showScript(0);
+            }
+        });
+    </script>
+</body>
+</html>

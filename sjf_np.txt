@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+vector<vector<float>>completeGC(vector<vector<float>> gc) {
+    int n = gc.size();
+    vector<float> remainingTime(n);
+    vector<float> completionTime(n, 0);
+    vector<float> startTime(n, -1);
+    
+    for(int i=0;i<n;i++) {
+        remainingTime[i] = gc[i][1];  
+    }
+
+    float currentTime = 0;
+    int completed = 0;
+    int prev = -1;
+
+    while(completed < n) {
+        int idx=-1;
+        float minRem = INT_MAX;
+
+        for(int i=0;i<n;i++) {
+            if(gc[i][0]<=currentTime && remainingTime[i]>0 && remainingTime[i]< minRem) {
+                minRem = remainingTime[i];
+                idx = i;
+            }
+        }
+
+        if(idx==-1) {
+            currentTime++;  
+            continue;
+        }
+
+        if(startTime[idx]==-1) 
+            startTime[idx]=currentTime;
+        
+        remainingTime[idx]--;
+        currentTime++;
+
+        if(remainingTime[idx] == 0) {
+            completionTime[idx] = currentTime;
+            completed++;
+        }
+    }
+
+    for(int i=0;i<n;i++) {
+        float tat = completionTime[i] - gc[i][0];        
+        float wt = tat - gc[i][1];                       
+        float rt = startTime[i] - gc[i][0];              
+
+        gc[i].push_back(completionTime[i]); 
+        gc[i].push_back(tat);
+        gc[i].push_back(wt);
+        gc[i].push_back(rt);
+    }
+
+    return gc;
+}
+
+int main() {
+    vector<vector<float>>gc={{0,2},{1,5},{2,3},{3,1},{5,4}};
+
+    sort(gc.begin(), gc.end(), [](const vector<float> &a, const vector<float> &b) {
+        return a[0] < b[0];
+    });
+
+    vector<vector<float>> result = completeGC(gc);
+
+    cout<<"AT\tBT\tCT\tTAT\tWT\tRT\n";
+    for(auto &p : result) {
+        cout<<p[0]<<"\t"<<p[1]<<"\t"<<p[2]<<"\t"<<p[3]<<"\t"<<p[4]<<"\t"<<p[5]<< "\n";
+    }
+    float avgCT = 0,avgTAT = 0,avgWT = 0;
+    for(auto vec:result){
+        avgCT += vec[2]/gc.size();
+        avgTAT += vec[3]/gc.size();
+        avgWT += vec[4]/gc.size();
+    }
+    cout<<endl;
+    cout<<"Average CT: "<<avgCT<<endl;
+    cout<<"Average TAT: "<<avgTAT<<endl;
+    cout<<"Average WT: "<<avgWT<<endl;
+    return 0;
+}

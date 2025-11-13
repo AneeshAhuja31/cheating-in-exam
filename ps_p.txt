@@ -1,0 +1,86 @@
+#include <iostream>
+#include <climits>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    int processes[] = {1, 2, 3, 4, 5};             
+    int arrival[] = {0, 2, 4, 5, 6};
+    int burst[] = {7, 4, 1, 4, 6};
+    int priority[] = {3, 1, 4, 2, 5};
+    int n = 5;
+
+    int remainingBurst[5];
+    for (int i = 0; i < n; i++) {
+        remainingBurst[i] = burst[i];
+    }
+
+    int completed = 0, currentTime = 0;
+    bool done[5] = {false};
+    int waiting[5] = {0}, turnaround[5] = {0}, completion[5] = {0};
+    int response[5];
+    for (int i = 0; i < n; i++) response[i] = -1;
+
+    while (completed < n) {
+        int idx = -1, highestPriority = INT_MAX;
+
+        for (int i = 0; i < n; i++) {
+            if (arrival[i] <= currentTime && !done[i]) {
+                if (priority[i] < highestPriority) {
+                    highestPriority = priority[i];
+                    idx = i;
+                } else if (priority[i] == highestPriority) {
+                    if (arrival[i] < arrival[idx]) idx = i;
+                }
+            }
+        }
+
+        if (idx == -1) {
+            currentTime++;
+        } else {
+            if (response[idx] == -1) {
+                response[idx] = currentTime - arrival[idx];
+            }
+            remainingBurst[idx]--;
+            currentTime++;
+
+            if (remainingBurst[idx] == 0) {
+                done[idx] = true;
+                completed++;
+                completion[idx] = currentTime;
+                turnaround[idx] = completion[idx] - arrival[idx];
+                waiting[idx] = turnaround[idx] - burst[idx];
+            }
+        }
+    }
+
+    int totalWaiting = 0, totalTurnaround = 0;
+
+    // Print formatted table
+    cout << "+---------+--------------+------------+-----------+----------------+----------------+-------------+---------------+\n";
+    cout << "| Process | Arrival Time | Burst Time | Priority  | Completion Time| Turnaround Time| Waiting Time| Response Time |\n";
+    cout << "+---------+--------------+------------+-----------+----------------+----------------+-------------+---------------+\n";
+
+    for (int i = 0; i < n; i++) {
+        cout << "| " << setw(7) << processes[i]
+                << " | " << setw(12) << arrival[i]
+                << " | " << setw(10) << burst[i]
+                << " | " << setw(9) << priority[i]
+                << " | " << setw(14) << completion[i]
+                << " | " << setw(14) << turnaround[i]
+                << " | " << setw(11) << waiting[i]
+                << " | " << setw(13) << response[i] << " |\n";
+
+        totalWaiting += waiting[i];
+        totalTurnaround += turnaround[i];
+    }
+
+    cout << "+---------+--------------+------------+-----------+----------------+----------------+-------------+---------------+\n";
+
+    cout << "\nTotal Waiting Time: " << totalWaiting << endl;
+    cout << "Total Turnaround Time: " << totalTurnaround << endl;
+    cout << "Average Waiting Time: " << fixed << (double)totalWaiting / n << endl;
+    cout << "Average Turnaround Time: " << fixed << (double)totalTurnaround / n << endl;
+
+    return 0;
+}

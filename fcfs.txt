@@ -1,0 +1,63 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+using namespace std;
+
+int main() {
+    int processes[] = {1, 2, 3, 4};
+    int arrivalTimes[] = {0, 1, 3, 5};
+    int burstTimes[] = {5, 3, 4, 2};
+    int n = sizeof(processes) / sizeof(processes[0]);
+
+    vector<int> waitingTimes(n), turnaroundTimes(n), completionTimes(n), responseTimes(n);
+    int totalWaitingTime = 0, totalTurnaroundTime = 0, totalResponseTime = 0;
+
+    // Calculate completion times
+    completionTimes[0] = arrivalTimes[0] + burstTimes[0];
+    for (int i = 1; i < n; i++) {
+        if (arrivalTimes[i] > completionTimes[i - 1]) {
+            completionTimes[i] = arrivalTimes[i] + burstTimes[i];
+        } else {
+            completionTimes[i] = completionTimes[i - 1] + burstTimes[i];
+        }
+    }
+
+    // Calculate turnaround, waiting, and response times
+    for (int i = 0; i < n; i++) {
+        turnaroundTimes[i] = completionTimes[i] - arrivalTimes[i];
+        waitingTimes[i] = turnaroundTimes[i] - burstTimes[i];
+        responseTimes[i] = waitingTimes[i]; // In FCFS, Response Time = Waiting Time
+    }
+
+    // Table Header
+    cout << "+---------+--------------+------------+-----------------+-----------------+--------------+---------------+" << endl;
+    cout << "| Process | Arrival Time | Burst Time | Completion Time | Turnaround Time | Waiting Time | Response Time |" << endl;
+    cout << "+---------+--------------+------------+-----------------+-----------------+--------------+---------------+" << endl;
+
+    // Table Rows
+    for (int i = 0; i < n; i++) {
+        cout << "| " << setw(8) << left << processes[i]
+                << "| " << setw(13) << left << arrivalTimes[i]
+                << "| " << setw(11) << left << burstTimes[i]
+                << "| " << setw(16) << left << completionTimes[i]
+                << "| " << setw(16) << left << turnaroundTimes[i]
+                << "| " << setw(13) << left << waitingTimes[i]
+                << "| " << setw(13) << left << responseTimes[i]
+                << " |" << endl;
+
+        totalWaitingTime += waitingTimes[i];
+        totalTurnaroundTime += turnaroundTimes[i];
+        totalResponseTime += responseTimes[i];
+    }
+
+    // Bottom border
+    cout << "+---------+--------------+------------+-----------------+-----------------+--------------+---------------+" << endl;
+
+    // Print totals and averages
+    cout << "\nTotal Waiting Time: " << totalWaitingTime << endl;
+    cout << "Total Turnaround Time: " << totalTurnaroundTime << endl;
+    cout << "Average Waiting Time: " << (double) totalWaitingTime / n << endl;
+    cout << "Average Turnaround Time: " << (double) totalTurnaroundTime / n << endl;
+
+    return 0;
+}

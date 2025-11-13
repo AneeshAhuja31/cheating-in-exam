@@ -1,0 +1,106 @@
+#include<iostream>
+#include<queue>
+using namespace std;
+
+struct Process {
+    int pid;
+    int arrival;
+    int burst;
+    int remaining;
+    int completion;
+    int turnaround;
+    int waiting;
+    int response;
+    bool started;
+};
+
+int main() {
+    int n = 6;
+    int time_quantum = 1;
+
+    int arrival[] = {0, 1, 3, 4, 6, 8};
+    int burst[] =   {3, 6, 1, 5, 7, 2};
+    int processes[] = {1, 2, 3, 4, 5, 6};
+
+    Process p[n];
+
+    for(int i = 0; i < n; i++) {
+        p[i].pid = processes[i];
+        p[i].arrival = arrival[i];
+        p[i].burst = burst[i];
+        p[i].remaining = burst[i];
+        p[i].completion = 0;
+        p[i].waiting = 0;
+        p[i].turnaround = 0;
+        p[i].response = -1;
+        p[i].started = false;
+    }
+
+    queue<int> q;
+    int current_time = 0;
+    int completed = 0;
+    bool visited[n] = {false};
+
+    while(completed < n) {
+        for(int i = 0; i < n; i++) {
+            if(p[i].arrival <= current_time && !visited[i]) {
+                q.push(i);
+                visited[i] = true;
+            }
+        }
+
+        if(q.empty()) {
+            current_time++;
+            continue;
+        }
+
+        int idx = q.front();
+        q.pop();
+
+        if(p[idx].response == -1)
+            p[idx].response = current_time - p[idx].arrival;
+
+        int exec_time = min(time_quantum, p[idx].remaining);
+        p[idx].remaining -= exec_time;
+        current_time += exec_time;
+
+        for(int i = 0; i < n; i++) {
+            if(p[i].arrival <= current_time && !visited[i]) {
+                q.push(i);
+                visited[i] = true;
+            }
+        }
+
+        if(p[idx].remaining == 0) {
+            p[idx].completion = current_time;
+            p[idx].turnaround = p[idx].completion - p[idx].arrival;
+            p[idx].waiting = p[idx].turnaround - p[idx].burst;
+            completed++;
+        } else {
+            q.push(idx);
+        }
+    }
+
+    int totalWaiting = 0, totalTurnaround = 0;
+    cout << "PID\tArrival Time\tBurst Time\tCompletion Time\tTurnaround Time\tWaiting Time\tResponse Time\n";
+    for(int i = 0; i < n; i++) {
+        cout << p[i].pid << "\t\t"
+<< p[i].arrival << "\t\t"
+<< p[i].burst << "\t\t"
+<< p[i].completion << "\t\t"
+<< p[i].turnaround << "\t\t"
+<< p[i].waiting << "\t\t"
+<< p[i].response << "\n";
+
+        totalWaiting += p[i].waiting;
+        totalTurnaround += p[i].turnaround;
+    }
+
+    cout << "\nTotal Waiting Time: " << totalWaiting;
+    cout << "\nAverage Waiting Time: " << (double)totalWaiting / n;
+
+    cout << "\n\nTotal Turnaround Time: " << totalTurnaround;
+    cout << "\nAverage Turnaround Time: " << (double)totalTurnaround / n << endl;
+
+    return 0;
+}    
