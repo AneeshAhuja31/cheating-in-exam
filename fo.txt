@@ -1,0 +1,157 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+// ================= SINGLE LEVEL DIRECTORY =================
+class SingleLevelDirectory {
+    vector<string>files;
+
+public:
+    void createFile(string filename) {
+        for (auto &f : files) {
+            if (f == filename) {
+cout<< "Error: File '" << filename << "' already exists.\n";
+return;
+            }
+        }
+files.push_back(filename);
+cout<< "File '" << filename << "' created successfully.\n";
+    }
+
+    void displayFiles() {
+cout<< "\n--- Single Level Directory ---\n";
+        if (files.empty())
+cout<< "No files found.\n";
+        else
+            for (auto &f : files)
+cout<< f <<endl;
+    }
+};
+
+// ================= TWO LEVEL DIRECTORY =================
+class TwoLevelDirectory {
+    map<string, vector<string>>userDirs;
+
+public:
+    void createUser(string username) {
+        if (userDirs.find(username) == userDirs.end()) {
+userDirs[username] = {};
+cout<< "User '" << username << "' created.\n";
+        } else {
+cout<< "User already exists.\n";
+        }
+    }
+
+    void createFile(string username, string filename) {
+        if (userDirs.find(username) == userDirs.end()) {
+cout<< "Error: User not found.\n";
+return;
+        }
+        auto &files = userDirs[username];
+        for (auto &f : files)
+            if (f == filename) {
+cout<< "Error: File already exists for user '" << username << "'.\n";
+return;
+            }
+files.push_back(filename);
+cout<< "File '" << filename << "' created for user '" << username << "'.\n";
+    }
+
+    void displayAll() {
+cout<< "\n--- Two Level Directory ---\n";
+        for (auto &u :userDirs) {
+cout<< "[" <<u.first<<"]\n";
+            for (auto &f :u.second)
+cout<<"  "<< f <<endl;
+        }
+    }
+};
+
+// ================= TREE STRUCTURED DIRECTORY =================
+class TreeDirectory {
+    struct Node {
+        string name;
+        bool isFile;
+        vector<Node*>children;
+Node(string n, bool f = false) : name(n), isFile(f) {}
+    };
+
+    Node *root;
+
+public:
+TreeDirectory() { root = new Node("root"); }
+
+    void addFile(Node *dir, string filename) {
+        for (auto c :dir->children) {
+            if (c->name == filename) {
+cout<< "Error: File or directory already exists.\n";
+return;
+            }
+        }
+dir->children.push_back(new Node(filename, true));
+cout<< "File '" << filename << "' added under '" <<dir->name << "'.\n";
+    }
+
+    Node* addDirectory(Node *dir, string dirname) {
+        for (auto c :dir->children) {
+            if (c->name == dirname) {
+cout<< "Error: Directory already exists.\n";
+                return c;
+            }
+        }
+        Node *newDir = new Node(dirname);
+dir->children.push_back(newDir);
+cout<< "Directory '" <<dirname<< "' created under '" <<dir->name << "'.\n";
+        return newDir;
+    }
+
+    void display(Node *dir, int depth = 0) {
+        for (int i = 0; i< depth; i++) cout<< "   ";
+cout<< (dir->isFile ? "File: " : "Dir: ") <<dir->name <<endl;
+        for (auto c :dir->children)
+display(c, depth + 1);
+    }
+    Node* getRoot() { return root; }
+};
+
+// ================= MAIN FUNCTION =================
+int main() {
+cout<< "===== FILE DIRECTORY ORGANIZATION DEMONSTRATION =====\n";
+
+    // ---------- Single Level ----------
+SingleLevelDirectorysingle;
+single.createFile("data.txt");
+single.createFile("report.docx");
+single.createFile("data.txt"); // duplicate test
+single.displayFiles();
+
+    // ---------- Two Level ----------
+TwoLevelDirectorytwo;
+two.createUser("Alice");
+two.createUser("Bob");
+two.createFile("Alice", "project.cpp");
+two.createFile("Alice", "notes.txt");
+two.createFile("Bob", "data.csv");
+two.displayAll();
+
+    // ---------- Tree Structured ----------
+TreeDirectorytree;
+    auto *root = tree.getRoot();
+    auto *userDir = tree.addDirectory(root, "user");
+    auto *alice = tree.addDirectory(userDir, "Alice");
+    auto *bob = tree.addDirectory(userDir, "Bob");
+
+tree.addFile(alice, "report.docx");
+    auto *data = tree.addDirectory(alice, "data");
+tree.addFile(data, "data1.csv");
+
+tree.addFile(bob, "notes.txt");
+tree.addDirectory(root, "system");
+
+cout<< "\n--- Tree Structured Directory ---\n";
+tree.display(root);
+
+    return 0;
+}

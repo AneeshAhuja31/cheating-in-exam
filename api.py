@@ -26,7 +26,8 @@ PROJECT_FILES = {
     'ffbtwt': 'ffbtwt.txt',
     'rw': 'rw.txt',
     'pc': 'pc.txt',
-    'b': 'b.txt'
+    'b': 'b.txt',
+    'fo':'fo.txt'
 }
 
 @app.get("/code", response_class=PlainTextResponse)
