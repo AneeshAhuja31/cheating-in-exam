@@ -27,7 +27,12 @@ PROJECT_FILES = {
     'rw': 'rw.txt',
     'pc': 'pc.txt',
     'b': 'b.txt',
-    'fo':'fo.txt'
+    'fo':'fo.txt',
+    'bellman':'bellman.txt',
+    'dij':'dij.txt',
+    'kushkal':'kushkal.txt',
+    'prims':'prims.txt',
+    'sm':'sm.txt'
 }
 
 @app.get("/code", response_class=PlainTextResponse)

@@ -1,0 +1,101 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+#include <iomanip>
+
+using namespace std;
+
+// Dijkstra’s Algorithm
+void dijkstra(int V, vector<vector<pair<int, int>>>& adj, int src, vector<int>& dist) {
+    dist.assign(V, INT_MAX);
+    dist[src] = 0;
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, src});
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        int currDist = pq.top().first;
+        pq.pop();
+
+        if (currDist > dist[u]) continue;
+
+        for (auto& neighbor : adj[u]) {
+            int v = neighbor.first;
+            int weight = neighbor.second;
+
+            if (dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+}
+
+// Function to print distance table in ASCII bordered style
+void printDistanceTable(int V, vector<vector<pair<int, int>>>& adj) {
+    vector<vector<int>> table(V, vector<int>(V, INT_MAX));
+
+    for (int src = 0; src < V; src++) {
+        vector<int> dist;
+        dijkstra(V, adj, src, dist);
+        for (int j = 0; j < V; j++) {
+            table[src][j] = dist[j];
+        }
+    }
+    
+    // Print header
+    cout << "+----------";
+    for (int i = 0; i < V; i++) cout << "+----------";
+    cout << "+\n";
+
+    cout << "| From/To  ";
+    for (int i = 0; i < V; i++) cout << "|   " << setw(4) << i << "   ";
+    cout << "|\n";
+
+    cout << "+----------";
+    for (int i = 0; i < V; i++) cout << "+----------";
+    cout << "+\n";
+
+    // Print rows
+    for (int src = 0; src < V; src++) {
+        cout << "|   " << setw(4) << src << "   ";
+        for (int j = 0; j < V; j++) {
+            if (table[src][j] == INT_MAX)
+                cout << "|   " << setw(4) << "INF" << "   ";
+            else
+                cout << "|   " << setw(4) << table[src][j] << "   ";
+        }
+        cout << "|\n";
+
+        cout << "+----------";
+        for (int i = 0; i < V; i++) cout << "+----------";
+        cout << "+\n";
+    }
+}
+
+int main() {
+    int V = 5;
+    vector<vector<pair<int, int>>> adj(V);
+
+    // Graph edges
+    adj[0].push_back({1, 9});
+    adj[0].push_back({2, 6});
+    adj[0].push_back({3, 5});
+    adj[0].push_back({4, 3});
+    adj[2].push_back({1, 2});
+    adj[2].push_back({3, 4});
+
+    // Since graph is undirected, add reverse edges
+    adj[1].push_back({0, 9});
+    adj[2].push_back({0, 6});
+    adj[3].push_back({0, 5});
+    adj[4].push_back({0, 3});
+    adj[1].push_back({2, 2});
+    adj[3].push_back({2, 4});
+
+    printDistanceTable(V, adj);
+
+    return 0;
+}
