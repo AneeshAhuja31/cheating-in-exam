@@ -32,7 +32,8 @@ PROJECT_FILES = {
     'dij':'dij.txt',
     'kushkal':'kushkal.txt',
     'prims':'prims.txt',
-    'sm':'sm.txt'
+    'sm':'sm.txt',
+    'nqueen':'nqueen.txt'
 }
 
 @app.get("/code", response_class=PlainTextResponse)
