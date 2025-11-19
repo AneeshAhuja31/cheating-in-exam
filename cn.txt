@@ -1,0 +1,112 @@
+AIM:-
+Connect two PCs using appropriate network wire using Static IP configuration. Verify the connectivity
+
+THEORY:-
+
+STATIC IP ADDRESS
+
+What is a static IP address?
+A static IP address is an IP address that doesn't change overtime. IP (internet protocol) addresses are numerically signifies that allow data packets to be sent and received from our networks and devices. Most IP addresses and the dynamic, which means that the change occasionally, on the other hand is always the same sequence of numbers.
+
+Why would you use a static IP address?
+•	Remote access solutions: The most common use case for a static IP address involves remote access systems, like VPNs. A company can make access to its resources and databases dependent upon the user having a pacific IP address. Users can then use a VPN application on their device to connect to a company server with the static IP address (the address needed for privilege access), and this will allow them to connect to and use company files and networks.
+•	Server hosting: If you are setting up and hosting a server using a static IP address can make it easier for devices to find and quickly connect to it.
+•	Faster data transfer from your internet gateway: If you set a device to use a static private IP address, that data can be sent from your internet gateway (usually a router or modem) to the device are little faster. The boost to your speed will be minimal, however.
+
+Types of Network Cables
+When setting up networks that may use static IP addresses, Ethernet cables are commonly used. There are two main wiring standards for Ethernet cables:
+1.	Straight-through cable
+o	Connects different devices (e.g., computer → switch, computer → router).
+o	Most common type of Ethernet cable.
+o	Both ends are wired in the same order (T568A → T568A or T568B → T568B).
+2.	Cross-over cable
+o	Connects similar devices directly (e.g., computer → computer, switch → switch) without needing a hub/switch in between.
+o	One end uses T568A, the other end uses T568B.
+o	Nowadays, many modern devices support Auto-MDIX, which automatically detects and adjusts, reducing the need for cross-over cables
+
+STEPS:-
+
+1.	Open Cisco Packet Tracer and drag two PC’s from the End Devices category to the workspace.
+2.	Drag a copper cross over cable from the Connections category and used it to connect the FastEthernet() interface of one PC to the FastEthernet() interface to the other PC.
+3.	To assign static IP addresses to the PC's, click on each PC and select Desktop>IP Configuration.
+4.	Enter an IP address for each PC, for example you can use 192.168.1.1 for PC0 and 192.168.1.2 for PC1.   
+5.	To test the connectivity, click on PDU and drop 1 on each PC.
+6.	To connect the two PC’s click on each PC and select Desktop>Command Prompt and type ping in followed by the IP address of the other PC. For instance on PC0, type ping 192.168.1.2 and press Enter and ping statistics are shown
+7.	Then, go to simulation and click on play the simulation.
+8.	You will be able to see the visualisation of the simple PDU being sent from PC0 to PC1 and then back. This confirm the successful connectivity between the two PC’s.
+
+
+
+Steps to Perform: Connect 5 PCs Using Static IP Configuration in Cisco Packet Tracer
+1. Open Cisco Packet Tracer
+
+Open the Packet Tracer application and start with a new workspace.
+
+2. Add Devices
+
+Go to the “End Devices” section.
+
+Drag five PCs (PC0, PC1, PC2, PC3, PC4) onto the workspace.
+
+Go to “Switches” and drag one 2960 switch onto the workspace.
+
+3. Connect the PCs to the Switch
+
+Use Copper Straight-Through cables to connect each PC to the switch.
+
+PC0: FastEthernet0 → Switch FastEthernet0/1
+
+PC1: FastEthernet0 → Switch FastEthernet0/2
+
+PC2: FastEthernet0 → Switch FastEthernet0/3
+
+PC3: FastEthernet0 → Switch FastEthernet0/4
+
+PC4: FastEthernet0 → Switch FastEthernet0/5
+
+4. Assign Static IP Addresses
+
+For each PC:
+
+Click the PC → Desktop → IP Configuration
+
+Assign the following IP addresses:
+
+PC0: IP Address 192.168.1.1, Subnet Mask 255.255.255.0
+PC1: IP Address 192.168.1.2, Subnet Mask 255.255.255.0
+PC2: IP Address 192.168.1.3, Subnet Mask 255.255.255.0
+PC3: IP Address 192.168.1.4, Subnet Mask 255.255.255.0
+PC4: IP Address 192.168.1.5, Subnet Mask 255.255.255.0
+
+(Default Gateway is not required since no router is used.)
+
+5. Verify Connectivity Using Command Prompt
+
+On each PC:
+
+Go to Desktop → Command Prompt
+
+Use the ping command to test connectivity. Example from PC0:
+
+ping 192.168.1.2
+ping 192.168.1.3
+ping 192.168.1.4
+ping 192.168.1.5
+
+Successful replies confirm the network is working.
+
+6. Verify Connectivity Using Simple PDU
+
+Select the Simple PDU tool (the envelope icon).
+
+Click the source PC, then the destination PC.
+
+Repeat for multiple PCs to check connectivity.
+
+Successful status messages confirm communication.
+
+7. Optional: Use Simulation Mode
+
+Switch to Simulation Mode.
+
+Click Play to observe packet flow between the PCs

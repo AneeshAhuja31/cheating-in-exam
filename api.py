@@ -33,7 +33,8 @@ PROJECT_FILES = {
     'kushkal':'kushkal.txt',
     'prims':'prims.txt',
     'sm':'sm.txt',
-    'nqueen':'nqueen.txt'
+    'nqueen':'nqueen.txt',
+    'cn':'cn.txt'
 }
 
 @app.get("/code", response_class=PlainTextResponse)
