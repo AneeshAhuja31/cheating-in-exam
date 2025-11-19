@@ -1,0 +1,87 @@
+ ------------------------------------------------------------------------------------
+| Version | IHL |   DSCP   |  ECN  |               Total Length                     |
+|--------|-----|-----------|-------|------------------------------------------------|
+|               Identification               | Flags |        Fragment Offset        |
+|--------------------------------------------|-------|--------------------------------|
+|        Time To Live (TTL)       |       Protocol        |     Header Checksum       |
+|-------------------------------------------------------------------------------------|
+|                                Source IP Address                                    |
+|-------------------------------------------------------------------------------------|
+|                              Destination IP Address                                 |
+|-------------------------------------------------------------------------------------|
+|                                   Options (if any)                                  |
+|-------------------------------------------------------------------------------------|
+|                                      Data                                           |
+ ------------------------------------------------------------------------------------
+
+
+Explanation of Each Field
+1. Version (4 bits)
+
+Indicates IP version. For IPv4, this value is 4.
+
+2. IHL – Internet Header Length (4 bits)
+
+Defines the size of the header in 32-bit words (minimum = 5 → 20 bytes).
+
+3. DSCP – Differentiated Services Code Point (6 bits)
+
+Used for QoS (priority handling of packets).
+
+4. ECN – Explicit Congestion Notification (2 bits)
+
+Helps avoid congestion without dropping packets.
+
+5. Total Length (16 bits)
+
+Full size of the packet (header + data), maximum 65,535 bytes.
+
+6. Identification (16 bits)
+
+Used for uniquely identifying fragments of an original IP packet.
+
+7. Flags (3 bits)
+
+Controls fragmentation:
+
+DF – Don't Fragment
+
+MF – More Fragments
+
+8. Fragment Offset (13 bits)
+
+Helps reassemble fragmented packets.
+
+9. TTL – Time to Live (8 bits)
+
+Number of hops a packet can travel before being discarded.
+
+10. Protocol (8 bits)
+
+Identifies the upper-layer protocol, e.g.:
+
+6 = TCP
+
+17 = UDP
+
+1 = ICMP
+
+11. Header Checksum (16 bits)
+
+Error-checking for the header.
+
+12. Source IP Address (32 bits)
+
+The IP address of the sender.
+
+13. Destination IP Address (32 bits)
+
+The IP address of the receiver.
+
+14. Options (variable)
+
+Optional settings like security, timestamp, record route.
+
+15. Data (variable)
+
+Actual payload (TCP/UDP segment, ICMP message, etc.)
