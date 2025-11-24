@@ -88,6 +88,13 @@ async def list_projects():
         "count": len(PROJECT_FILES)
     }
 
+@app.get("/se")
+async def get_se():
+    return {
+        "aneesh":"https://drive.google.com/file/d/1WpD6wkLpf_bA6_LEH1ygDcKqLcHneCdd/view",
+        "aakash":"https://drive.google.com/file/d/1V7MQN1Fv85A2y1Y9oN7EnYHGXeIu-G7K/view"
+    }
+
 @app.get("/info")
 async def get_info():
     """
