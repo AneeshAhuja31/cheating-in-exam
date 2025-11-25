@@ -1,3 +1,19 @@
+Program:- 8
+
+AIM:-
+Write a program to implement N Queen's problem using Back Tracking.
+
+ALGORITHM:-
+1.	Start from the firstrow and try to place a queen in the first column.
+2.	Check if placing the queen at the current position is safe:
+o	No other queen is in the same column.
+o	No other queen is in the same left diagonal.
+o	No other queen is in the same right diagonal.
+3.	If it is safe, place the queen and move to the next row recursively.
+4.	If placing a queen in any column of the current row is not possible, backtrack to the previous row and move the queen to the next column.
+5.	Repeat until all queens are placed or all configurations are exhausted.
+
+CODE:-
 #include <iostream>
 #include <vector>
 
@@ -60,3 +76,14 @@ cin>> n;
 solveNQueens(n);
 return 0;
 }
+
+OUTPUT:-
+ 
+ 
+TIME COMPLEXITY:-
+•	The worst-case time complexity of the N-Queens backtracking solution is O(N!).
+•	For the first row, there are N choices.
+•	For the second row, there are at most (N-1) choices (since you cannot place a queen in the same column as the first queen).
+•	For the third row, there are at most (N-2) choices, and so forth.
+Hence, the total number of possible configurations is roughly N * (N-1) * (N-2) * ... * 1 = N!.
+ 

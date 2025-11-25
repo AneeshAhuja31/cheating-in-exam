@@ -35,7 +35,9 @@ PROJECT_FILES = {
     'sm':'sm.txt',
     'nqueen':'nqueen.txt',
     'cn':'cn.txt',
-    'ipv4':'ipv4.txt'
+    'ipv4':'ipv4.txt',
+    'mm':'mm.txt',
+    'hc':'hc.txt'
 }
 
 @app.get("/code", response_class=PlainTextResponse)
