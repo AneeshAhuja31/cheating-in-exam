@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,12 +16,15 @@
             background-color: #000;
             font-family: 'Courier New', monospace;
             padding: 20px;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
         }
 
         body::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
+            /* Chrome, Safari, Opera */
         }
 
         .container {
@@ -29,9 +33,39 @@
         }
 
         .header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
             padding: 10px;
+        }
+
+        .mode-toggle-btn {
+            background-color: transparent;
+            color: #333;
+            border: 1px solid #333;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .mode-toggle-btn:hover {
+            background-color: #333;
+            color: #000;
+        }
+
+        .white-text .mode-toggle-btn {
+            color: #ccc;
+            border-color: #ccc;
+        }
+
+        .white-text .mode-toggle-btn:hover {
+            background-color: #ccc;
+            color: #000;
         }
 
         .toggle-btn {
@@ -138,12 +172,15 @@
             border: 1px solid #1a1a1a;
             max-height: 600px;
             overflow-y: auto;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
         }
 
         .code-content::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
+            /* Chrome, Safari, Opera */
         }
 
         .error-message {
@@ -181,10 +218,12 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container" id="mainContainer">
         <div class="header">
             <button class="toggle-btn" onclick="toggleTextColor()">Toggle Text Color</button>
+            <button class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleMode()">Switch to Theory</button>
         </div>
 
         <div class="error-message" id="errorMessage"></div>
@@ -203,6 +242,9 @@
     </div>
 
     <script>
+        // API base URL
+        const API_BASE_URL = 'http://localhost:8080';
+
         // List of your .txt files in the same directory
         const scriptFiles = [
             { title: 'fcfs', file: 'fcfs.txt' },
@@ -216,25 +258,57 @@
             { title: 'rw', file: 'rw.txt' },
             { title: 'pc', file: 'pc.txt' },
             { title: 'b', file: 'b.txt' },
-            { title: 'fo', file: 'fo.txt'},
-            { title: 'bellman',file: 'bellman.txt'},
-            { title: 'nqueen',file: 'nqueen.txt'},
-            { title: 'dij', file: 'dij.txt'},
-            { title: 'kushkal', file: 'kushkal.txt'},
-            { title: 'prims', file: 'prims.txt'},
-            { title: 'sm', file: 'sm.txt'},
-            { title: 'cn', file: 'cn.txt'},
-            { title: 'ipv4', file: 'ipv4.txt'},
-            { title: 'mm', file: 'mm.txt'},
-            { title: 'hc', file: 'hc.txt'},
+            { title: 'fo', file: 'fo.txt' },
+            { title: 'bellman', file: 'bellman.txt' },
+            { title: 'nqueen', file: 'nqueen.txt' },
+            { title: 'dij', file: 'dij.txt' },
+            { title: 'kushkal', file: 'kushkal.txt' },
+            { title: 'prims', file: 'prims.txt' },
+            { title: 'sm', file: 'sm.txt' },
+            { title: 'cn', file: 'cn.txt' },
+            { title: 'ipv4', file: 'ipv4.txt' },
+            { title: 'mm', file: 'mm.txt' },
+            { title: 'hc', file: 'hc.txt' },
+        ];
+
+        // Theory topics
+        const theoryTopics = [
+            { title: 'fcfs', topic: 'fcfs' },
+            { title: 'sjf', topic: 'sjf' },
+            { title: 'ps', topic: 'ps' },
+            { title: 'rr', topic: 'rr' },
+            { title: 'pr', topic: 'pr' },
+            { title: 'ffbfwf', topic: 'ffbfwf' },
+            { title: 'rw', topic: 'rw' },
+            { title: 'pc', topic: 'pc' },
+            { title: 'b', topic: 'b' },
+            { title: 'fo', topic: 'fo' }
         ];
 
         let scriptsData = {};
+        let theoryData = {};
         let currentScript = null;
+        let currentMode = 'code'; // 'code' or 'theory'
 
         function toggleTextColor() {
             const container = document.getElementById('mainContainer');
             container.classList.toggle('white-text');
+        }
+
+        function toggleMode() {
+            currentMode = currentMode === 'code' ? 'theory' : 'code';
+            const modeBtn = document.getElementById('modeToggleBtn');
+            modeBtn.textContent = currentMode === 'code' ? 'Switch to Theory' : 'Switch to Code';
+
+            // Reload tabs for the new mode
+            loadTabs();
+
+            // Load first item in the new mode
+            if (currentMode === 'code' && scriptFiles.length > 0) {
+                showScript(0);
+            } else if (currentMode === 'theory' && theoryTopics.length > 0) {
+                showTheory(0);
+            }
         }
 
         function copyCode() {
@@ -279,6 +353,30 @@
             }
         }
 
+        function showTheory(index) {
+            const topic = theoryTopics[index];
+            currentScript = index;
+
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Update display
+            document.getElementById('codeTitle').textContent = topic.title + ' (Theory)';
+
+            if (theoryData[topic.topic]) {
+                document.getElementById('codeContent').textContent = theoryData[topic.topic];
+            } else {
+                document.getElementById('codeContent').textContent = 'Loading...';
+                loadTheory(index);
+            }
+        }
+
         async function loadScript(index) {
             const script = scriptFiles[index];
             try {
@@ -290,16 +388,40 @@
                 scriptsData[script.file] = content;
 
                 // Update display if this is still the selected script
-                if (currentScript === index) {
+                if (currentScript === index && currentMode === 'code') {
                     document.getElementById('codeContent').textContent = content;
                 }
             } catch (error) {
                 console.error(`Error loading ${script.file}:`, error);
                 scriptsData[script.file] = `Error: Could not load ${script.file}`;
-                if (currentScript === index) {
+                if (currentScript === index && currentMode === 'code') {
                     document.getElementById('codeContent').textContent = scriptsData[script.file];
                 }
                 showError(`Could not load ${script.file}. Make sure the file exists in the same directory.`);
+            }
+        }
+
+        async function loadTheory(index) {
+            const topic = theoryTopics[index];
+            try {
+                const response = await fetch(`${API_BASE_URL}/theory?topic=${topic.topic}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to load theory for ${topic.topic}`);
+                }
+                const content = await response.text();
+                theoryData[topic.topic] = content;
+
+                // Update display if this is still the selected topic
+                if (currentScript === index && currentMode === 'theory') {
+                    document.getElementById('codeContent').textContent = content;
+                }
+            } catch (error) {
+                console.error(`Error loading theory for ${topic.topic}:`, error);
+                theoryData[topic.topic] = `Error: Could not load theory for ${topic.topic}`;
+                if (currentScript === index && currentMode === 'theory') {
+                    document.getElementById('codeContent').textContent = theoryData[topic.topic];
+                }
+                showError(`Could not load theory for ${topic.topic}. Make sure the API is running.`);
             }
         }
 
@@ -312,17 +434,32 @@
             }, 5000);
         }
 
+        function loadTabs() {
+            const tabsContainer = document.getElementById('tabsContainer');
+            tabsContainer.innerHTML = ''; // Clear existing tabs
+
+            if (currentMode === 'code') {
+                scriptFiles.forEach((script, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'tab-btn';
+                    button.textContent = script.title;
+                    button.onclick = () => showScript(index);
+                    tabsContainer.appendChild(button);
+                });
+            } else {
+                theoryTopics.forEach((topic, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'tab-btn';
+                    button.textContent = topic.title;
+                    button.onclick = () => showTheory(index);
+                    tabsContainer.appendChild(button);
+                });
+            }
+        }
+
         // Initialize tabs when page loads
         window.addEventListener('DOMContentLoaded', () => {
-            const tabsContainer = document.getElementById('tabsContainer');
-
-            scriptFiles.forEach((script, index) => {
-                const button = document.createElement('button');
-                button.className = 'tab-btn';
-                button.textContent = script.title;
-                button.onclick = () => showScript(index);
-                tabsContainer.appendChild(button);
-            });
+            loadTabs();
 
             // Load first script by default
             if (scriptFiles.length > 0) {
@@ -331,4 +468,5 @@
         });
     </script>
 </body>
+
 </html>
