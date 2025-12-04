@@ -1,0 +1,17 @@
+THEORY:-
+Round Robin Scheduling is a method used by operating systems to manage the execution time of multiple processes that are competing for CPU attention. It is called "round robin" because the system rotates through all the processes, allocating each of them a fixed time slice or "quantum", regardless of their priority.
+The primary goal of this scheduling method is to ensure that all processes are given an equal opportunity to execute, promoting fairness among tasks.
+•	Process Arrival: Processes enter the system and are placed in a queue.
+•	Time Allocation: Each process is given a certain amount of CPU time, called a quantum.
+•	Execution: The process uses the CPU for the allocated time.
+•	Rotation: If the process completes within the time, it leaves the system. If not, it goes back to the end of the queue.
+•	Repeat: The CPU continues to cycle through the queue until all processes are completed.
+
+Key Concepts:
+•	Arrival Time(AT): Time at which the process arrives in the ready queue.
+•	Burst Time (BT): Time required by a process to complete execution.
+•	Time Quantum: The fixed time for which CPU will be allotted to the process.
+•	Completion Time(CT): Time at which the process completes execution.
+•	Turnaround Time(TAT): TAT = CT – AT
+•	Waiting Time(WT):WT = TAT – BT
+•	Response Time(RT): Time from process arrival until the first time it starts

@@ -1,0 +1,34 @@
+NON-PREEMPTIVE MODE:-
+THEORY:-
+Priority Scheduling is a CPU scheduling algorithm in which each process is assigned a priority. The CPU is allocated to the process with the highest priority (typically the lowest numerical value, unless otherwise specified).
+In Non-Preemptive Priority Scheduling, once the CPU is assigned to a process, it cannot be taken away until the process finishes execution.
+Key Concepts
+•	Arrival Time (AT): Time at which the process arrives in the ready queue.
+•	Burst Time (BT): Time required by a process to complete execution.
+•	Priority (P): Importance of a process. Lower value indicates higher priority.
+•	Completion Time (CT): Time at which the process completes execution.
+•	Turnaround Time (TAT): TAT = CT - AT
+•	Waiting Time (WT): WT = TAT - BT
+Characteristics
+•	Non-Preemptive: Once a process starts, it runs till completion.
+•	Starvation: Low-priority processes may wait indefinitely.
+•	Aging: Technique to gradually increase priority of waiting processes to prevent starvation
+
+PREEMPTIVE MODE:-
+THEORY:-
+In Preemptive Priority Scheduling, the CPU can be taken away from a running process if a new process arrives with a higher priority (lower priority number, usually) than the currently running one.
+This means that the scheduler continuously checks for any process with a higher priority and preempts the currently running process if necessary.
+Key Points:-
+•	CPU can be interrupted: A running process may be paused to allow a higher priority process to run.
+•	Context switching happens frequently, depending on process arrival and priorities.
+•	Prevents long waiting times for high priority processes.
+•	Can cause starvation for low priority processes.
+•	Response time becomes important: time from arrival to the first time the process gets the CPU.
+Key Concepts:-
+•	Arrival Time (AT): Time at which the process arrives in the ready queue.
+•	Burst Time (BT): Time required by a process to complete execution.
+•	Priority (P): Importance of a process. Lower value indicates higher priority.
+•	Completion Time (CT): Time at which the process completes execution.
+•	Turnaround Time (TAT): TAT = CT - AT
+•	Waiting Time (WT): WT = TAT - BT
+•	Response Time (RT): Time from process arrival until the first time it starts execution.

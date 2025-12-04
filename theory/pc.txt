@@ -1,0 +1,22 @@
+THEORY:-
+Producer–Consumer Problem is a synchronization problem. A producer generates items and places them in a buffer, while a consumer removes them. To avoid race conditions: 
+•	Use a mutex (binary semaphore) for mutual exclusion.
+•	Use empty semaphore to track free slots. 
+•	Use full semaphore to track filled slots.
+
+Algorithm:
+Initialize: 
+•	mutex = 1, empty = N, full = 0. 
+
+Producer: 
+•	Wait on empty. 
+•	Wait on mutex. 
+•	Add item to buffer. 
+•	Signal mutex.
+•	Signal full. 
+Consumer: 
+•	Wait on full. 
+•	Wait on mutex. 
+•	Remove item from buffer. 
+•	Signal mutex. 
+•	Signal empty. 

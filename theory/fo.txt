@@ -1,0 +1,86 @@
+THEORY:-
+In an operating system, a file directory is a data structure that stores information about files — such as their names, locations, types, and access permissions. A directory provides:
+•	A mapping between a file name and its physical location on disk.
+•	A way to organize files for efficient storage, retrieval, and management.
+
+Different operating systems use different directory structures depending on complexity, user requirements, and access patterns.
+
+Types of Directory Organization Techniques
+
+1. Single-Level Directory
+
+Definition:
+•	In this method, all files are stored in the same directory.
+•	Every file in the system has a unique name, and there is no hierarchy or subdirectory.
+
+Working:
+•	All users share the same directory space.
+•	Files are identified by their unique names.
+•	Access is direct using the file name.
+
+Advantages:
+•	Very simple to implement and understand.
+•	Easy to maintain for small systems.
+
+Disadvantages:
+•	Name conflict: Two users cannot have files with the same name.
+•	No grouping: Difficult to organize files logically.
+•	Poor scalability: Becomes confusing as the number of files increases.
+
+Applications:
+•	Early operating systems (like MS-DOS).
+•	Small embedded or single-user systems.
+
+2. Two-Level Directory
+
+Definition:
+•	In this structure, each user has their own directory, and all user directories are contained within a master directory.
+•	This avoids name conflicts and allows better file organization.
+
+Working:
+•	Each user’s files are kept separate in their personal directory.
+•	File names can repeat across different users.
+•	The OS searches the user’s directory when accessing files.
+
+Advantages:
+•	Eliminates naming conflicts between users.
+•	Provides a basic level of security — users cannot directly access others’ files.
+•	Allows user-specific file organization.
+
+Disadvantages:
+•	Users cannot easily share files with each other.
+•	Still limited hierarchy — only two levels.
+•	Becomes inefficient for systems with many users.
+
+Applications:
+•	Multi-user systems like UNIX (in early versions).
+•	University or company systems with distinct user accounts.
+
+3. Tree-Structured Directory
+
+Definition:
+•	The tree-structured directory is a hierarchical organization where directories can contain subdirectories, allowing an arbitrary depth of file organization.
+•	This is the most common and flexible structure used in modern operating systems.
+
+Working:
+•	Files are accessed using pathnames:
+•	Absolute Path: /user/alice/report.docx
+•	Relative Path: ../bob/notes.txt
+•	The root directory is at the top of the hierarchy.
+•	Each directory may contain both files and subdirectories.
+
+Advantages:
+•	Allows grouping and logical organization of files.
+•	Supports user directories, shared folders, and system files.
+•	Provides efficient access control and file management.
+•	Highly scalable for large systems.
+
+Disadvantages:
+•	Slightly more complex implementation.
+•	Requires additional memory to maintain directory hierarchy.
+•	File path traversal can be slower if the directory tree is very deep.
+
+Applications:
+•	Modern operating systems (Windows, Linux, macOS).
+•	Cloud file systems and large-scale servers.
+ 

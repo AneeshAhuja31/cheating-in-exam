@@ -1,0 +1,105 @@
+(a) LRU (LEAST RECENTLY USED)
+The Least Recently Used (LRU) theory is a caching and memory management strategy that evicts the least recently used items from a limited-size cache to make space for new ones, based on the principle that recently used data is more likely to be used again in the future. When a cache is full, the LRU algorithm identifies the item that hasn't been accessed for the longest time and replaces it. This technique is widely used to improve performance by reducing page faults in operating systems and increasing cache hit rates in various applications.  
+
+Core Principles 
+•	Assumption: Data that has been accessed recently is more likely to be accessed again soon.
+•	Goal: To keep the most relevant and frequently needed data in the cache.
+•	Mechanism: When the cache is full and a new item needs to be added, the least recently used item is identified and removed (evicted).
+
+How it Works
+1.	Tracking Usage: 
+The algorithm maintains an order of usage, typically using a data structure like a linked list or a hash map. 
+2.	Accessing an Item: 
+When an item is accessed (a "hit"), it is moved to the "most recently used" position. 
+3.	Adding a New Item: 
+When a new item arrives and the cache is full, the item at the "least recently used" position is evicted. 
+4.	Page Faults (Operating Systems): 
+In memory management, a page fault occurs when a program tries to access a piece of data (a page) that isn't in RAM. The LRU algorithm replaces the least recently used page in RAM with the new page needed by the program. 
+
+Applications
+•	Operating Systems: For managing memory and reducing page faults, ensuring frequently used pages stay in main memory. 
+•	Web Caching: To store frequently requested web pages, improving load times for users. 
+•	Databases: To keep frequently queried data readily available, speeding up database operations. 
+
+Advantages
+•	Good Performance: Often provides a better hit rate (more successful data retrievals) compared to simpler algorithms like First-In, First-Out (FIFO). 
+•	Predictable Decisions: Eviction decisions are consistent and solely based on recency of access. 
+Absolutely! Here are well-structured, clear theories for the remaining page replacement policies — FIFO, Optimal, and MRU — written in the same detailed style as your LRU theory.
+(b) FIFO (FIRST IN FIRST OUT)
+The First-In, First-Out (FIFO) page replacement policy is the simplest memory management technique. It removes the oldest page from memory — the one that was loaded first — to make space for a new page. The core idea is that pages are replaced in the same order they entered, without considering how frequently or recently they were accessed.
+Core Principles
+• Assumption: Pages loaded earlier are less likely to be needed again compared to newer
+ones.
+• Goal: To manage memory in a straightforward, queue-based manner.
+• Mechanism: When the memory (or cache) is full, the page that entered first (the
+"oldest") is evicted to make room for the new page.
+
+How it Works
+1.	Tracking Order:
+A queue is used to track the order in which pages were loaded into memory.
+2.	Adding a Page:
+Each new page is added to the back of the queue.
+3.	Page Replacement:
+When the cache is full, the page at the front of the queue (the earliest one loaded) is removed and replaced with the new page.
+4.	Page Faults:
+If a requested page isn’t in memory, it causes a page fault, and the replacement process occurs.
+Applications
+• Operating Systems: Used as a simple page replacement policy for process scheduling and memory management.
+• Embedded Systems: Where low-complexity algorithms are preferred.
+• Educational Tools: Commonly used to teach the basics of page replacement.
+
+Advantages
+• Simple Implementation: Easy to code using queues.
+• Low Overhead: Requires minimal bookkeeping or tracking of usage frequency.
+ 
+Disadvantages
+• Poor Performance in Some Cases: May evict pages that are still frequently used.
+• Belady’s Anomaly: Increasing the number of frames can sometimes increase the number of page faults.
+
+(c) OPTIMAL
+The Optimal page replacement policy replaces the page that will not be used for the longest period of time in the future. It provides the lowest possible page-fault rate among all algorithms but is mainly theoretical because it requires knowledge of future page references — something not possible in real systems.
+Core Principles
+• Assumption: The future sequence of page requests is known.
+• Goal: To minimize page faults by always replacing the page that won’t be needed for the longest time.
+• Mechanism: Identify the page whose next use is farthest in the future and evict it.
+How it Works
+1.	Prediction of Future Use:
+The algorithm looks ahead in the page reference string to determine which pages will be used later.
+2.	Replacement Decision:
+When a page fault occurs and memory is full, the page with the farthest future use (or not used again) is replaced.
+3.	Page Fault Handling:
+Similar to LRU and FIFO, a page fault triggers a replacement, but the decision is based on future references instead of past ones.
+Applications
+• Benchmarking: Used as a theoretical standard to compare real algorithms (like LRU or FIFO).
+• Simulation Models: Helps analyze system performance under ideal conditions.
+Advantages
+• Minimum Page Faults: No other algorithm can perform better in terms of page-fault rate.
+• Best for Analysis: Serves as a baseline for evaluating practical algorithms.
+Disadvantages
+• Impractical in Reality: Requires future knowledge of memory references.
+• High Computational Overhead: Not feasible for real-time systems.
+(d) MRU (MOST RECENTLY USED)
+The Most Recently Used (MRU) page replacement policy is the opposite of LRU. It removes the most recently accessed page first, based on the idea that if a page was just used, it might not be needed again soon. MRU is effective in certain access patterns where recently used data is less likely to be reused immediately.
+Core Principles
+• Assumption: Pages that were recently used are less likely to be used again soon.
+• Goal: To retain older pages that may be reused later while replacing the most recently accessed ones.
+• Mechanism: When memory is full and a new page is needed, the most recently used page is identified and evicted.
+How it Works
+1.	Tracking Usage:
+The algorithm maintains the order of page access.
+2.	Accessing a Page:
+When a page is accessed, it is marked as the most recently used.
+3.	Adding a New Page:
+If the cache is full, the page that was most recently accessed (MRU) is removed.
+4.	Page Faults:
+Occur when a requested page is not in memory; the MRU page is then replaced.
+Applications
+• Database Systems: When recently accessed data is unlikely to be accessed again soon (e.g., range queries).
+• Specialized Caches: Where data is used only once or sequentially.
+Advantages
+• Effective for Sequential Access Patterns: Performs well when data is read once and not reused immediately.
+• Simple Implementation: Similar structure to LRU but with reversed logic.
+Disadvantages
+• Poor Performance in Repetitive Access Patterns: If pages are repeatedly accessed, MRU causes frequent page faults.
+• Less Common in General Use: Suitable only for specific scenarios.
+

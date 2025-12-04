@@ -1,0 +1,29 @@
+THEORY:-
+Banker’s Algorithm is used to avoid deadlock by checking if resource allocation to a process will leave the system in a safe state. It is named because a banker never allocates all his cash to customers without ensuring that enough remains to satisfy future needs.
+
+Key Concepts:
+Each process must declare in advance:
+•	Max – the maximum resources it may need.
+•	Allocation – resources currently allocated.
+•	Need = Max – Allocation.
+•	Available – resources currently available.
+Before granting a request, the system checks whether it would still be in a safe state.
+
+Algorithm:
+Step 1: Initialization
+•	Input total number of processes n and resource types m.
+•	Input Available, Max, and Allocation matrices.
+•	Compute Need = Max – Allocation.
+
+Step 2: Safety Algorithm
+1.	Work = Available
+Finish[i] = false for all i
+2.	Find a process i such that:
+o	Finish[i] == false
+o	Need[i] ≤ Work
+3.	If such a process is found:
+o	Work = Work + Allocation[i]
+o	Finish[i] = true
+o	Add i to safe sequence
+4.	If no such process exists and some Finish[i] = false → system is unsafe.
+Else → safe sequence found

@@ -1,0 +1,28 @@
+THEORY:-
+The Reader–Writer Problem is a classic synchronization problem in operating systems.
+•	There are multiple reader threads and writer threads.
+•	Readers can read the shared data simultaneously if no writer is writing.
+•	Writers must have exclusive access — only one can write at a time, and no reader can read during that.
+The goal is to avoid race conditions and ensure mutual exclusion using semaphores.
+
+Algorithm:
+1. Initialize:
+•	mutex = 1 → controls access to readCount.
+•	wrt = 1 → controls access to shared resource.
+•	readCount = 0 → number of active readers.
+
+2. Reader Process:
+•	wait(mutex)
+•	readCount++
+•	if (readCount == 1)
+•	wait(wrt)
+•	signal(mutex)
+•	wait(mutex)
+•	readCount--
+•	if (readCount == 0)
+•	signal(wrt) 
+•	signal(mutex)
+
+3. Writer Process:
+•	wait(wrt)
+•	signal(wrt)

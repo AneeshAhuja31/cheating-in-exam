@@ -1,0 +1,21 @@
+First Come First Serve (FCFS) 
+First Come First Serve (FCFS) is the most basic CPU scheduling algorithm. In this method, the process that enters the ready queue first is executed first. It is also called First In First Out (FIFO) scheduling, similar to how a regular queue works.
+Characteristics:
+•	Scheduling Type: Non-preemptive (once a process starts, it continues until completion).
+•	Selection Criteria: The process with the earliest arrival time is chosen.
+•	Data Structure Used: Queue.
+Working Principle:
+1.	Processes are arranged in the order of their arrival time.
+2.	The CPU executes the process at the front of the queue until it completes.
+3.	The next process in the queue is then executed, and this continues for all processes.
+Important Terms:
+•	Arrival Time (AT): The time when a process enters the ready queue.
+•	Burst Time (BT): The total time needed by a process to run on the CPU.
+•	Completion Time (CT): The time when a process finishes execution.
+•	Turnaround Time (TAT): The total time taken from arrival to completion.
+TAT=CT−ATTAT = CT - ATTAT=CT−AT 
+•	Waiting Time (WT): The total time a process spends waiting in the ready queue.
+WT=TAT−BTWT = TAT - BTWT=TAT−BT 
+Applications:
+•	Batch processing systems where processes are handled one after another.
+•	Situations where fairness is prioritized over quick response.

@@ -1,0 +1,49 @@
+THEORY:-
+1. First Fit Algorithm
+Definition:
+In the First Fit algorithm, the operating system allocates the first available memory block that is large enough to accommodate the process. The search for a free block begins from the start of memory and stops as soon as a suitable hole is found.
+Working Principle:
+1.	Maintain a list of free memory blocks (holes).
+2.	Traverse the list from the beginning.
+3.	Allocate the first block that is large enough for the process.
+4.	If the block is larger than required, the remaining portion is left as a smaller free block.
+Advantages:
+• Fast and simple to implement.
+• Minimal search time for allocation.
+Disadvantages:
+• Leads to external fragmentation over time.
+• The beginning of memory gets filled quickly, leaving small unusable holes.
+Applications:
+• Suitable for general-purpose systems where speed of allocation is more important than memory efficiency.
+2. Best Fit Algorithm
+Definition:
+The Best Fit algorithm allocates the smallest free block that is large enough to satisfy the process’s memory request. The goal is to minimize wasted space within allocated blocks.
+Working Principle:
+1.	Search the entire list of free memory blocks.
+2.	Select the block that gives the least leftover space after allocation.
+3.	If multiple blocks fit equally well, the first among them is chosen.
+4.	Split the block if it is larger than required.
+Advantages:
+• Reduces internal fragmentation by using space efficiently.
+• Attempts to leave larger holes for future allocations.
+Disadvantages:
+• Slower allocation time due to searching the entire list.
+• Can create many small unusable holes, increasing external fragmentation.
+Applications:
+• Used when memory utilization efficiency is more important than speed, such as in batch or embedded systems.
+3. Worst Fit Algorithm
+Definition:
+The Worst Fit algorithm allocates the largest available free block to the requesting process. The idea is to leave the largest remaining hole, hoping it can accommodate future processes.
+Working Principle:
+1.	Search the entire list of free blocks.
+2.	Select the block with the maximum size.
+3.	Allocate memory to the process and leave the remaining part as a smaller hole.
+Advantages:
+• Reduces the chance of creating very small fragments initially.
+• May perform better in systems with variable process sizes.
+Disadvantages:
+• Wastes large memory spaces for small processes.
+• Requires searching the entire list, increasing allocation time.
+• Still prone to external fragmentation in the long run.
+Applications:
+• Used in systems where large processes frequently arrive and fragmentation control is desired.

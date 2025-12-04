@@ -1,0 +1,49 @@
+SHORTEST JOB FIRST (SJF) – NON-PREEMPTIVE :-
+
+THEORY:-
+Shortest Job First (SJF) is a CPU scheduling algorithm that selects the process with the smallest burst time for execution next. It aims to minimize the average waiting time by giving preference to shorter processes first.
+SJF is non-preemptive, meaning once the CPU is allocated to a process, it cannot be taken away until the process finishes execution. If two processes have the same burst time, the tie is usually broken by their arrival time (the process that arrived first is executed first).
+
+Working Principle:
+1.	Processes are arranged based on Arrival Time (AT) and then selected according to the shortest Burst Time (BT) available.
+2.	The process with the least burst time among the available ones is executed first.
+3.	This continues until all processes are executed.
+
+Important Terms:
+•	Arrival Time (AT): Time at which a process enters the ready queue.
+•	Burst Time (BT): The CPU time required by a process to complete.
+•	Completion Time (CT): The time when a process finishes execution.
+•	Turnaround Time (TAT): Total time from arrival to completion.
+TAT=CT−AT
+•	Waiting Time (WT): Time a process spends waiting in the ready queue.
+WT=TAT−BT
+
+Applications:
+•	Batch Processing: Useful where jobs can be estimated, and faster jobs should be completed early.
+•	Data Processing Systems: Optimizes throughput when job lengths are predictable.
+•	Compiler Scheduling: Smaller tasks can be prioritized to improve responsiveness.
+
+SHORTEST JOB FIRST (SJF) – PREEMPTIVE (SHORTEST REMAINING TIME FIRST – SRTF):-
+
+THEORY:-
+In the Preemptive version of SJF, also known as Shortest Remaining Time First (SRTF), the CPU is always allocated to the process with the shortest remaining burst time. If a new process arrives with a shorter burst time than the remaining time of the current process, the CPU is preempted and assigned to the new process.
+SRTF ensures that processes with shorter execution times are always prioritized, reducing average waiting time further compared to non-preemptive SJF. However, it comes with the cost of more context switches.
+Working Principle:
+1.	At any given time, the process with the shortest remaining burst time is selected for execution.
+2.	If a new process arrives with a smaller burst time than the currently running process’s remaining time, the CPU is preempted.
+3.	This continues until all processes are completed.
+
+Important Terms:
+•	Arrival Time (AT): Time at which a process enters the ready queue.
+•	Burst Time (BT): CPU execution time required by a process.
+•	Remaining Time (RT): The burst time still needed for a process to finish execution.
+•	Completion Time (CT): Time when a process finishes execution.
+•	Turnaround Time (TAT): Total time from arrival to completion.
+TAT=CT−ATTAT = CT - ATTAT=CT−AT 
+•	Waiting Time (WT): Total time a process spends waiting.
+WT=TAT−BTWT = TAT - BTWT=TAT−BT 
+
+Applications:
+•	Interactive Systems: Good for systems where shorter tasks must be executed quickly to maintain responsiveness.
+•	Real-Time Systems: Useful when prioritizing tasks with shorter deadlines.
+•	Time-Sharing Environments: Improves average response time for quick jobs.
